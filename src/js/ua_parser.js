@@ -4,7 +4,7 @@
 (function (exports) {
     'use strict';
 
-  // 判断参数的类型（string || array）
+  // 判断是否支持Array.isArray(),如果不支持，就定义一个Array.isArray()方法
   if (!Array.isArray) {
         Array.isArray = function(arg) {
             return Object.prototype.toString.call(arg) === '[object Array]';
