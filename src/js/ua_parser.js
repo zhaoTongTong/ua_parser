@@ -4,13 +4,19 @@
 (function (exports) {
     'use strict';
 
-    if (!Array.isArray) {
+  // 判断参数的类型（string || array）
+  if (!Array.isArray) {
         Array.isArray = function(arg) {
             return Object.prototype.toString.call(arg) === '[object Array]';
         };
     }
-    
-    function checkUserAgent(ua) {
+
+  /**
+   * 获取浏览器信息
+   * @param {string} ua - ua信息
+   * @returns {{}}
+   */
+  function checkUserAgent(ua) {
         var browser = {};
         var match = /(dolfin)[ \/]([\w.]+)/.exec( ua ) ||
                 /(edge)[ \/]([\w.]+)/.exec( ua ) ||
@@ -41,6 +47,11 @@
         return browser;
     }
 
+  /**
+   * 格式化version
+   * @param {string} versionString - 版本号
+   * @returns {{}}
+   */
     function setVersion(versionString) {
         var version = {};
 
@@ -53,6 +64,11 @@
         return version;
     }
 
+  /**
+   * 核对平台
+   * @param {string} ua - useragent
+   * @returns {*}
+   */
     function checkPlatform (ua) {
         if (isPc(ua)) {
             return "pc";
@@ -64,19 +80,37 @@
             return "";
         }
     }
-    function isPc (ua) {
+
+  /**
+   * 判断是不是PC
+   * @param ua
+   * @returns {boolean}
+   */
+  function isPc (ua) {
         if (ua.match(/linux|windows (nt|98)|macintosh|cros/) && !ua.match(/android|mobile|polaris|lgtelecom|uzard|natebrowser|ktf;|skt;/)) {
             return true;
         }
         return false;
     }
-    function isTablet (ua) {
+
+  /**
+   * 判断是不是pad
+   * @param ua
+   * @returns {boolean}
+   */
+  function isTablet (ua) {
         if (ua.match(/ipad/) || (ua.match(/android/) && !ua.match(/mobi|mini|fennec/))) {
             return true;
         }
         return false;
     }
-    function isMobile (ua) {
+
+  /**
+   * 判断是不是手机
+   * @param ua
+   * @returns {boolean}
+   */
+  function isMobile (ua) {
         if (!!ua.match(/ip(hone|od)|android.+mobile|windows (ce|phone)|blackberry|bb10|symbian|webos|firefox.+fennec|opera m(ob|in)i|tizen.+mobile|polaris|iemobile|lgtelecom|nokia|sonyericsson|dolfin|uzard|natebrowser|ktf;|skt;/)) {
             return true;
         } else {
@@ -84,6 +118,11 @@
         }
     }
 
+  /**
+   * 核对操作系统
+   * @param {string} ua -useragent
+   * @returns {{}}
+   */
     function checkOs (ua) {
         var os = {},
             match = /(iphone|ipad|ipod)[\S\s]*os ([\w._\-]+) like/.exec(ua) ||
@@ -117,6 +156,14 @@
     }
 
     var baseAppList = ['crios', 'fxios', 'daumapps'];
+
+
+  /**
+   * 核对app信息
+   * @param {string} ua - useragent
+   * @param {string|array} customAppList - app列表
+   * @returns {{}}
+   */
     function checkApp (ua, customAppList) {
         var app = {},
             match = null,
@@ -152,9 +199,16 @@
         return app;
     }
 
+  /**
+   * 获取ua信息，并且格式化为小写
+   * @param ua
+   * @returns {string}
+   */
     function getLowerUserAgent(ua) {
         var lowerUa = '';
         if (!ua) {
+
+            // 获取ua
             if (typeof window !== 'undefined' && window.navigator && typeof window.navigator.userAgent === 'string') {
                 lowerUa = window.navigator.userAgent.toLowerCase();
             } else {
@@ -167,7 +221,13 @@
         return lowerUa;
     }
 
-    var userAgent = exports.userAgent = function (ua, customAppList) {
+
+  /**
+   * 获取ua信息
+   * @param {string} ua - ua信息
+   * @type {userAgent}
+   */
+  var userAgent = exports.userAgent = function (ua, customAppList) {
         var lowerUa = getLowerUserAgent(ua);
         
         return {
